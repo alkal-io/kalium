@@ -1,5 +1,4 @@
-# Kalium
-### Reactive framework
+# Kalium: a reactive framework for micro-services
 
 ## What is Kalium
 Kalium is simple client that help build reactive micro-services architechture on top of queues.
