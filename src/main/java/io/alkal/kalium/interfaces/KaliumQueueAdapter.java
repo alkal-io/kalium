@@ -1,5 +1,8 @@
 package io.alkal.kalium.interfaces;
 
-public interface KaliumQueue {
+import io.alkal.kalium.internals.QueueListener;
+
+public interface KaliumQueueAdapter {
     void post(Object object);
+    void setQueueListener(QueueListener queueListener);
 }
