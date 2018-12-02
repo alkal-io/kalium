@@ -10,7 +10,7 @@ Currently, developed for Java services connected to Apache Kafka, but planned to
 
 
 ``` java
- public class MyReactor {
+ public class MyReactor extends Reactor{
     
     @On("payment.processed == false")
     public void processPayment(Payment payment) {
@@ -57,13 +57,13 @@ dependencies {
 }
 ```
 
-## Initializing Kalium
+## Quick start
 ``` java
  public static void main(String[] args) {
     Kalium kalium = Kalium.Builder()
-        .setQueue(new KaliumKafkaQueue("localhost:9092"))
-        .addReactor(MyReactor1.class)
-        .addReactor(MyReactor2.class)
+        .setQueue(new KafkaQueueKaliumAdapter("localhost:9092"))
+        .addReactor(new PaymentProcessor())
+        .addReactor(new ReceiptArchiver())
         .build();
         
     kalium.start();
@@ -73,19 +73,29 @@ dependencies {
 
 
 ``` java
-public class MyReactor {
- 
- 
- 
+
+public class PaymentProcessor extends Reactor{
+
  @On("payment.processed == false")
  public void processPayment(Payment payment) {
     // Do something with the payment
     payment.processed = true;
     kalium.post(payment);
     
-    //Produce and send receipt
+    //Produce and post a new receipt
     Reciept receipt = ...;
     kalium.post(receipt);
+ }
+}
+```
+``` java
+
+public class ReceiptArchiver extends Reactor{
+
+ @On("receipt")
+ public void archiveReceipt(Receipt receipt) {
+    //store the receipt in the DB
+    db.persist(receipt)
  }
 }
 ```
