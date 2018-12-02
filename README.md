@@ -1,7 +1,7 @@
 # Kalium: a reactive framework for micro-services
 
 ## What is Kalium
-Kalium is simple client that help build reactive micro-services architechture on top of queues.
+Kalium is a simple client that help build reactive micro-services architecture on top of queues.
 Currently, supporting Java only, but will support many other popular languages.
 
 Kalium provides a simple way to react to queued events. We call a call that defines methods on how to treat each event as a Reactor. 
@@ -17,22 +17,22 @@ Kalium provides a simple way to react to queued events. We call a call that defi
  }
 ```
 
-In addition to reacting to events, Kalium provides a simple way to broadcast events
+In addition to reacting to events, Kalium provides a simple way to post events
 ``` java
  public class PaymentService {
-    private On on;    
+    private Kalium kalium;    
     
     public void publishNewPayment(Payment payment) {
         payment.processed = false;
-        on.broadcast(payment);
+        kalium.post(payment);
     }
  }
 ```
 
 ## How Kalium works
-Behind the scenes Kalium will use the ```@On``` annotations to define out-of-the-box serilizer/de-serilizer for the event classes. Based on the different queue it connects to it will generate implementation of the queue listener.
+Behind the scenes, Kalium uses the ```@On``` annotations to define out-of-the-box serializer/de-serializer for the event classes. The condition specified inside the ```@On``` annotation is translated to a generated queue listener,  based on the underlying queue it uses.
 
-The default queue is an Apache Kafka. But it can be extended to any other queue like RabbitMQ, ApacheMQ, etc...
+The default queue is an Apache Kafka. However, it can be extended to any other queue like RabbitMQ, ApacheMQ, etc...
 ## Adding Kalium to your build
 
 Kalium's Maven group ID is `io.alkal` and its artifact ID is `kalium`.
