@@ -2,6 +2,7 @@ package io.alkal.kalium;
 
 import io.alkal.kalium.interfaces.KaliumQueueAdapter;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,9 +26,20 @@ public class KaliumBuilder {
     public Kalium build() {
         Kalium kalium = new Kalium();
         Map<Class<?>, Object> reactorsMap = new HashMap<>();
+        Map<Class<?>, List<Method>> objectTypeToHandlersMap = new HashMap<>();
         for (Class reactorClass : reactors) {
             try {
                 reactorsMap.put(reactorClass, reactorClass.newInstance());
+                for (Method method:reactorClass.getDeclaredMethods()) {
+                    assert method.getParameterCount() == 1;
+                    Class parameter = method.getParameterTypes()[0];
+                    List<Method> handlers = objectTypeToHandlersMap.get(parameter);
+                    if(handlers == null) {
+                        handlers = new LinkedList<>();
+                        objectTypeToHandlersMap.put(parameter, handlers);
+                    }
+                    handlers.add(method);
+                }
             } catch (InstantiationException ie) {
 
             } catch (IllegalAccessException iae) {
@@ -36,7 +48,9 @@ public class KaliumBuilder {
 
         }
         queueAdapter.setQueueListener(kalium);
+        kalium.setQueueAdapter(queueAdapter);
         kalium.setReactors(reactorsMap);
+        kalium.setObjectTypeToHandlersMap(objectTypeToHandlersMap);
         return kalium;
     }
 }

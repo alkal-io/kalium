@@ -3,20 +3,24 @@
  */
 import io.alkal.kalium.Kalium;
 import io.alkal.kalium.tests.DummyKaliumQueueAdapter;
+import io.alkal.kalium.tests.DummyQueue;
 import io.alkal.kalium.tests.MyReactor;
 import io.alkal.kalium.tests.Payment;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class LibraryTest {
+public class KaliumBasicTest {
 
-    @Test public void testSomeLibraryMethod() {
+    @Test
+    public void testItShouldCallReactorMethod_whenAMatchingEventIsPosted() {
 
+        DummyQueue dummyQueue = new DummyQueue();
 
-        DummyKaliumQueueAdapter queueAdapter = new DummyKaliumQueueAdapter();
+        DummyKaliumQueueAdapter queueAdapter1 = new DummyKaliumQueueAdapter();
+        queueAdapter1.setDummyQueue(dummyQueue);
 
         Kalium kalium1 = Kalium.Builder()
-                .setQueueAdapter(queueAdapter)
+                .setQueueAdapter(queueAdapter1)
                 .addReactor(MyReactor.class)
                 .build();
 
@@ -24,8 +28,11 @@ public class LibraryTest {
         MyReactor myReactor = Mockito.spy(kalium1.getReactorInstance(MyReactor.class));
         kalium1.start();
 
+        DummyKaliumQueueAdapter queueAdapter2 = new DummyKaliumQueueAdapter();
+        queueAdapter2.setDummyQueue(dummyQueue);
+
         Kalium kalium2 = Kalium.Builder()
-                .setQueueAdapter(queueAdapter)
+                .setQueueAdapter(queueAdapter2)
                 .build();
         Mockito.spy(kalium2);
         kalium2.start();
