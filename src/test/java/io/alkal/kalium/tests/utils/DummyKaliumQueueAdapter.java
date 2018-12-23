@@ -1,9 +1,7 @@
-package io.alkal.kalium.tests;
+package io.alkal.kalium.tests.utils;
 
 import io.alkal.kalium.interfaces.KaliumQueueAdapter;
 import io.alkal.kalium.internals.QueueListener;
-
-import java.util.ArrayDeque;
 
 public class DummyKaliumQueueAdapter implements KaliumQueueAdapter {
 
