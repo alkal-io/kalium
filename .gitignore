@@ -25,6 +25,9 @@ hs_err_pid*
 #Gradle
 .gradle
 
+#Maven
+build
+
 #IntelliJ
 .idea/
 

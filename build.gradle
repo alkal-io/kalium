@@ -9,6 +9,7 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+    id 'maven-publish'
 }
 
 dependencies {
@@ -23,9 +24,23 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.23.4'
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'io.alkal'
+            artifactId = 'kalium'
+            version = '0.0.1'
+
+            from components.java
+        }
+    }
+}
+
+
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenLocal()
 }
