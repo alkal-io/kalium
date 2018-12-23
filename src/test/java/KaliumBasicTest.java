@@ -18,14 +18,13 @@ public class KaliumBasicTest {
 
         DummyKaliumQueueAdapter queueAdapter1 = new DummyKaliumQueueAdapter();
         queueAdapter1.setDummyQueue(dummyQueue);
-
+        MyReactor myReactor = Mockito.spy(new MyReactor());
         Kalium kalium1 = Kalium.Builder()
                 .setQueueAdapter(queueAdapter1)
-                .addReactor(MyReactor.class)
+                .addReactor(myReactor)
                 .build();
 
         kalium1 = Mockito.spy(kalium1);
-        MyReactor myReactor = Mockito.spy(kalium1.getReactorInstance(MyReactor.class));
         kalium1.start();
 
         DummyKaliumQueueAdapter queueAdapter2 = new DummyKaliumQueueAdapter();
