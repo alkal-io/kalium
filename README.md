@@ -1,12 +1,11 @@
 # Kalium: a reactive framework for micro-services
 
 ## What is Kalium
-Kalium is a simple client that can react to events and post new ones. Reacting and acting to events provides a way micro-services can asynchronously interact with each other. 
+Kalium is a simple client that can react to events and post new ones. Reacting and acting to events provides a way for micro-services to asynchronously interact with each other. 
 Kalium act as an abstraction on top of existing frameworks that support actors model, such as different type of queues and frameworks like akka.io.
 
 
-Currently, developed for Java services connected to Apache Kafka, but planned to support many other popular languages and frameworks.
-
+Kalium currently only supports Java services connected to Apache Kafka, but support for many other popular languages and frameworks is planned.
 
 
 ``` java
