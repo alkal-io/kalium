@@ -1,5 +1,6 @@
-package io.alkal.kalium;
+package io.alkal.kalium.internals;
 
+import io.alkal.kalium.Kalium;
 import io.alkal.kalium.interfaces.KaliumQueueAdapter;
 import io.alkal.kalium.internals.utils.ReflectionUtils;
 
@@ -25,12 +26,14 @@ public class KaliumBuilder {
     }
 
     public Kalium build() {
-        Kalium kalium = new Kalium();
+        KaliumImpl kalium = new KaliumImpl();
         Map<Class<?>, Object> reactorsMap = new HashMap<>();
-        Map<Class<?>, List<Method>> objectTypeToHandlersMap = new HashMap<>();
+        Map<Class<?>,Map<Class<?>, List<Method>>>  reactorToObjectTypeToMethodMap = new HashMap<>();
         reactors.forEach(reactor -> {
 
             Class<?> reactorClass = reactor.getClass();
+            Map<Class<?>, List<Method>> objectTypeToHandlersMap = new HashMap<>();
+            reactorToObjectTypeToMethodMap.put(reactorClass, objectTypeToHandlersMap);
             reactorsMap.put(reactorClass, reactor);
             ReflectionUtils.getMethodsAnnotatedWithOn(reactorClass).forEach(method -> {
                         assert method.getParameterCount() == 1;
@@ -50,7 +53,7 @@ public class KaliumBuilder {
         queueAdapter.setQueueListener(kalium);
         kalium.setQueueAdapter(queueAdapter);
         kalium.setReactors(reactorsMap);
-        kalium.setObjectTypeToHandlersMap(objectTypeToHandlersMap);
+        kalium.setReactorToObjectTypeToMethodMap(reactorToObjectTypeToMethodMap);
         return kalium;
     }
 }

@@ -1,6 +1,12 @@
 package io.alkal.kalium.internals;
 
+import java.util.Collection;
+
 public interface QueueListener {
 
-    void onObjectReceived(Object object);
+    Collection<Class<?>> getClassesToListenTo();
+
+    Collection<Class<?>> getReactorClasses();
+
+    void onObjectReceived(Class<?> reactorClass, Object object);
 }
