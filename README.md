@@ -1,4 +1,5 @@
 # Kalium: a reactive framework for micro-services
+https://travis-ci.org/alkal-io/kalium.svg?branch=master
 
 ## What is Kalium
 Kalium is a simple client that can react to events and post new ones. Reacting and acting to events provides a way for micro-services to asynchronously interact with each other. 
