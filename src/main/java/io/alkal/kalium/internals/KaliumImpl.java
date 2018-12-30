@@ -6,6 +6,7 @@ import io.alkal.kalium.interfaces.KaliumQueueAdapter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,15 +44,6 @@ public class KaliumImpl implements Kalium, QueueListener {
         this.reactorToObjectTypeToMethodMap = reactorToObjectTypeToMethodMap;
     }
 
-    @Override
-    public Collection<Class<?>> getClassesToListenTo() {
-        return reactorToObjectTypeToMethodMap.keySet();
-    }
-
-    @Override
-    public Collection<Class<?>> getReactorClasses() {
-        return reactors.keySet();
-    }
 
     @Override
     public void onObjectReceived(Class<?> reactorClass, Object object) {
@@ -71,5 +63,14 @@ public class KaliumImpl implements Kalium, QueueListener {
             }
         });
 
+    }
+
+    @Override
+    public Map<Class<?>, Collection<Class<?>>> getReactorToObjectTypeMap() {
+        Map<Class<?>, Collection<Class<?>>> reactorToObjectTypes = new HashMap<>();
+        reactorToObjectTypeToMethodMap.entrySet().forEach(entry -> {
+            reactorToObjectTypes.put(entry.getKey(), entry.getValue().keySet());
+        });
+        return  reactorToObjectTypes;
     }
 }
