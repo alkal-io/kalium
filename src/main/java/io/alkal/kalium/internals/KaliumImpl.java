@@ -20,6 +20,7 @@ public class KaliumImpl implements Kalium, QueueListener {
 
     @Override
     public void start() {
+        queueAdapter.start();
     }
 
     @Override

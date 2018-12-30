@@ -14,6 +14,11 @@ public class DummyKaliumQueueAdapter implements KaliumQueueAdapter {
     }
 
     @Override
+    public void start() {
+        //do nothing
+    }
+
+    @Override
     public void post(Object object) {
         dummyQueue.post(this, object);
     }

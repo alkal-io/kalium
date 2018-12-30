@@ -49,11 +49,11 @@ public class KaliumBuilder {
             );
 
         });
-
-        queueAdapter.setQueueListener(kalium);
-        kalium.setQueueAdapter(queueAdapter);
         kalium.setReactors(reactorsMap);
         kalium.setReactorToObjectTypeToMethodMap(reactorToObjectTypeToMethodMap);
+        queueAdapter.setQueueListener(kalium);
+        kalium.setQueueAdapter(queueAdapter);
+
         return kalium;
     }
 }
