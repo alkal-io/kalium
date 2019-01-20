@@ -1,4 +1,5 @@
 #install: gradle wrapper --gradle-version 5.1.1
+install: ./gradlew assemble
 language: java
 jdk:
   - oraclejdk8
