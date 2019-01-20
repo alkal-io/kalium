@@ -9,3 +9,5 @@ before_script:
 - chmod a+x gradlew
 
 sccript: ./gradlew build
+notifications:
+  slack: kalium-alkalio:TKKbLCQK8wW6HLPGfrGWyKUS
