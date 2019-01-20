@@ -10,6 +10,8 @@ plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
     id 'maven-publish'
+    id "com.palantir.git-version" version "0.12.0-rc2"
+    id 'signing'
 }
 
 dependencies {
@@ -24,18 +26,64 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.23.4'
 }
 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'io.alkal'
             artifactId = 'kalium'
             version = '0.0.1'
-
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                name = 'Kalium'
+                description = 'A reactive framework for micro-services. current commit_id='+gitVersion()
+                url = 'https://kalium.alkal.io'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'zivzs'
+                        name = 'Ziv Salzman'
+                        email = 'whoisziv@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/alkal-io/kalium.git'
+                    developerConnection = 'scm:git:ssh://github.com/alkal-io/kalium.git'
+                    url = 'http://github.com/alkal-io/kalium.git'
+                }
+            }
         }
     }
 }
 
+signing {
+    sign publishing.publications.maven
+}
+
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {
