@@ -8,7 +8,7 @@ import io.alkal.kalium.annotations.On;
  */
 public class MyReactor {
 
-    @On("payment.processed == false")
+    @On
     public void doSomething(Payment payment){
         payment.setProcessed(true);
     }
