@@ -10,6 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Ziv Salzman
+ * Created on 20-Jan-2019
+ */
+
 public class KaliumImpl implements Kalium, QueueListener {
     private Map<Class<?>, Object> reactors;
 

@@ -3,6 +3,10 @@ package io.alkal.kalium.tests.utils;
 import io.alkal.kalium.interfaces.KaliumQueueAdapter;
 import io.alkal.kalium.internals.QueueListener;
 
+/**
+ * @author Ziv Salzman
+ * Created on 20-Jan-2019
+ */
 public class DummyKaliumQueueAdapter implements KaliumQueueAdapter {
 
     private QueueListener queueListener;

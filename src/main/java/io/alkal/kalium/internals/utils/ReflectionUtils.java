@@ -7,6 +7,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Ziv Salzman
+ * Created on 20-Jan-2019
+ */
 public class ReflectionUtils {
 
     public static List<Method> getMethodsAnnotatedWithOn(Class<?> clazz) {

@@ -7,6 +7,10 @@ import io.alkal.kalium.tests.utils.DummyQueue;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+/**
+ * @author Ziv Salzman
+ * Created on 20-Jan-2019
+ */
 public class KaliumBasicTest {
 
     @Test
