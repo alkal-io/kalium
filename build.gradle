@@ -14,6 +14,9 @@ plugins {
     id 'signing'
 }
 
+group = 'io.alkal'
+version = '0.0.1-SNAPSHOT'
+
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
@@ -36,19 +39,15 @@ task javadocJar(type: Jar) {
     classifier = 'javadoc'
 }
 
-
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'io.alkal'
-            artifactId = 'kalium'
-            version = '0.0.1'
             from components.java
             artifact sourcesJar
             artifact javadocJar
             pom {
                 name = 'Kalium'
-                description = 'A reactive framework for micro-services. current commit_id='+gitVersion()
+                description = 'A reactive framework for micro-services. current commit_id=' + gitVersion()
                 url = 'https://kalium.alkal.io'
 
                 licenses {
@@ -72,6 +71,18 @@ publishing {
             }
         }
     }
+
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = project.properties['sonatype.user']
+                password = project.properties['sonatype.password']
+            }
+        }
+    }
 }
 
 signing {
@@ -80,7 +91,7 @@ signing {
 
 
 javadoc {
-    if(JavaVersion.current().isJava9Compatible()) {
+    if (JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption('html5', true)
     }
 }
