@@ -26,7 +26,7 @@ Here is how we would use Kalium to help us with these data flows.
  }
 ```
 
-#### Preparing the receipt
+#### Preparing a receipt
 ``` java
  public class ReceiptProducer {
     ...
@@ -39,7 +39,7 @@ Here is how we would use Kalium to help us with these data flows.
  }
 ```
 
-#### email the receipt to the customer
+#### Emailing a receipt to a customer
 ``` java
  public class ReceiptMailer {
     ...
