@@ -106,7 +106,7 @@ public class Greeter {
             .setQueue(new KaliumKafkaQueueAdapter("localhost:9092"))
             .build();
         kalium.start();
-        Hello hello = new Hello("world");  //Hello is a simple pojo that both services know about
+        Hello hello = new Hello("world");
         kalium.post(hello);
    }
 }
