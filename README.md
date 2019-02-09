@@ -2,20 +2,51 @@
 [![Build Status](https://travis-ci.org/alkal-io/kalium.svg?branch=master)](https://travis-ci.org/alkal-io/kalium)
 
 ## What is Kalium
-Kalium is a simple client that can react to events and post new ones. Reacting and acting to events provides a way for micro-services to asynchronously interact with each other. 
-Kalium act as an abstraction on top of existing frameworks that support actors model, such as different type of queues and frameworks like akka.io.
+Kalium is a framework the make it easier for micro-services to asynchronously interact with each other.
 
+Here's an example in Java. Let's assume we have an e-commerce site that accepts payments and send receipts to customers.
+Upon checkout, the customer is sending a ```Payment``` that is processed. Once a ```Payment``` is processed, a ```Receipt``` need to be sent to the customer.
 
-Kalium currently only supports Java services connected to Apache Kafka, but support for many other popular languages and frameworks is planned.
+For scale purposes, we assume paymentד are processed on one micro-service, while receipts are produced and sent from diffrenet micro-services.
 
+Here is how we would use Kalium to help us with these data flows.
 
+Processing the payment
 ``` java
- public class MyReactor extends Reactor{
-    
+ public class PaymentProcessor {
+    ...
     @On("payment.processed == false")
     public void processPayment(Payment payment) {
-        // Do something with the payment
+        // Do something with the payment, e.g. call Stripe to make the actual payment
         payment.processed = true;
+        kalium.post(payment);
+    }
+ }
+```
+
+Preparing the receipt
+``` java
+ public class ReceiptProducer {
+    ...
+    @On("payment.processed == true")
+    public void prepareReceipt(Payment payment) {
+        //convert processed payment into receipt
+        Receipt newReceipt = converPaymentToReceipt(payment);
+        kalium.post(newReceipt);
+    }
+ }
+```
+
+email the receipt to the customer
+``` java
+ public class ReceiptMailer {
+    ...
+    @On("receipt")
+    public void sendReceipt(Receipt receipt) {
+        //send the receipt, e.g. convert it to HTML and send it with SendGrid
+        prepareReceiptEmailAndSend(receipt);
+        receipt.sent = true;
+        kalium.post(receipt);
     }
  }
 ```
@@ -33,9 +64,11 @@ In addition to reacting to events, Kalium provides a simple way to post events
 ```
 
 ## How Kalium works
-Behind the scenes, Kalium uses the ```@On``` annotations to define out-of-the-box serializer/de-serializer for the event classes. The condition specified inside the ```@On``` annotation is translated to a generated queue listener,  based on the underlying queue it uses.
+Behind the scenes, Kalium is using existing queueu technology as a scalable event bus. Kalium uses the ```@On``` annotations to define out-of-the-box serializer/de-serializer for the event classes. The condition specified inside the ```@On``` annotation is translated to a generated queue listener, based on the underlying queue it uses.
 
-The default queue is an Apache Kafka. However, it can be extended to any other queue like RabbitMQ, ApacheMQ, etc...
+Currently, Kalium is supporting Java, and can only be used with Apache Kafka as the underlying event bus. But it is planned to have implementation for other lanaguages like Javascript and Python, and to be used with AWS Kinesis as well.
+
+
 ## Adding Kalium to your build
 
 Kalium's Maven group ID is `io.alkal` and its artifact ID is `kalium`.
@@ -44,8 +77,8 @@ To add a dependency on On using Maven, use the following:
 ```xml
 <dependency>
   <groupId>io.alkal</groupId>
-  <artifactId>kalium</artifactId>
-  <version>1.0.0</version>
+  <artifactId>kalium-kafka</artifactId>
+  <version>0.0.1</version>
 </dependency>
 ```
 
@@ -53,7 +86,7 @@ To add a dependency using Gradle:
 
 ```gradle
 dependencies {
-  compile 'io.alkal:kalium:1.0.0'
+  compile 'io.alkal:kalium-kafka:0.0.1'
 }
 ```
 
