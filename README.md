@@ -68,7 +68,7 @@ To add a dependency on On using Maven, use the following:
 <dependency>
   <groupId>io.alkal</groupId>
   <artifactId>kalium-kafka</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -76,9 +76,17 @@ To add a dependency using Gradle:
 
 ```gradle
 dependencies {
-  compile 'io.alkal:kalium-kafka:0.0.1'
+  compile 'io.alkal:kalium-kafka:0.0.1-SNAPSHOT'
 }
 ```
+
+First you have to build it though:
+```
+git clone git@github.com:alkal-io/kalium-kafka.git
+cd kalium-kafka
+./gradlew publishToMavenLocal
+```
+Note: on gradle you might have to add your ```mavenLocal()``` repository
 
 ## Quick start
 #### Sending ```Hello``` object between services
