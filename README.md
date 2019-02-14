@@ -65,28 +65,36 @@ Kalium's Maven group ID is `io.alkal` and its artifact ID is `kalium-kafka`.
 To add a dependency on On using Maven, use the following:
 
 ```xml
+<repositories>
+    <repository>
+      <id>maven_staging</id>
+      <name>Maven Staging Repo</name>
+      <url>https://oss.sonatype.org/content/groups/staging</url>
+    </repository>
+    ...
+</repositories>
+...
 <dependency>
   <groupId>io.alkal</groupId>
   <artifactId>kalium-kafka</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
 </dependency>
 ```
 
 To add a dependency using Gradle:
 
 ```gradle
+repositories {
+    ... 
+    maven {
+        url "https://oss.sonatype.org/content/groups/staging"
+    }
+}
+
 dependencies {
-  compile 'io.alkal:kalium-kafka:0.0.1-SNAPSHOT'
+  compile 'io.alkal:kalium-kafka:0.0.1'
 }
 ```
-
-First you have to build it though:
-```
-git clone git@github.com:alkal-io/kalium-kafka.git
-cd kalium-kafka
-./gradlew publishToMavenLocal
-```
-Note: on gradle you might have to add your ```mavenLocal()``` repository
 
 ## Quick start
 #### Sending ```Hello``` object between services
