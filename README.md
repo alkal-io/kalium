@@ -65,15 +65,6 @@ Kalium's Maven group ID is `io.alkal` and its artifact ID is `kalium-kafka`.
 To add a dependency on On using Maven, use the following:
 
 ```xml
-<repositories>
-    <repository>
-      <id>maven_staging</id>
-      <name>Maven Staging Repo</name>
-      <url>https://oss.sonatype.org/content/groups/staging</url>
-    </repository>
-    ...
-</repositories>
-...
 <dependency>
   <groupId>io.alkal</groupId>
   <artifactId>kalium-kafka</artifactId>
@@ -84,13 +75,6 @@ To add a dependency on On using Maven, use the following:
 To add a dependency using Gradle:
 
 ```gradle
-repositories {
-    ... 
-    maven {
-        url "https://oss.sonatype.org/content/groups/staging"
-    }
-}
-
 dependencies {
   compile 'io.alkal:kalium-kafka:0.0.1'
 }
