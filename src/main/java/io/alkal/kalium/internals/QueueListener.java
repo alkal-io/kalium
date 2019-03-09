@@ -14,8 +14,11 @@ import java.util.Map;
  */
 public interface QueueListener {
 
+    /**
+     *
+     * @return map from a processingGroup id, AKA a reactor id, to a list of topics, AKA objectTypes
+     */
+    Map<String, Collection<Class>> getReactorIdsToObjectTypesMap();
 
-    Map<String, Collection<String>> getTopicsByProcessingGroupsToListenTo();
-
-    void onObjectReceived(String processingGroup, Object object);
+    void onObjectReceived(String reactorId, Object object);
 }

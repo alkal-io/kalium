@@ -44,23 +44,23 @@ public interface Kalium {
 
 
     /**
-     * Defines a reaction to an object of type <T>. Use this method for events/object that suppose to be processed by
+     * Defines a reaction to an object of type T. Use this method for events/object that suppose to be processed by
      * all kalium instances that "listen" to the same type of objects, AKA pub-sub processing.
      * @param condition  an expression defining if the method will be invoked
      * @param objectType the class of the object that is processed
-     * @param consumer   the actual processing logic in form of object -> {some logic}
+     * @param consumer   the actual processing logic in form of a lambda function
      * @param <T>        the class of the object that is processed
      */
     <T> void on(String condition, Class<T> objectType, Consumer<T> consumer);
 
 
     /**
-     * Defines a reaction to an object of type <T>. Use this method for events/object that suppose to be processed by
+     * Defines a reaction to an object of type T. Use this method for events/object that suppose to be processed by
      * only one kalium instances with the same processingGroup that "listen" to the same type of objects, AKA p2p processing.
      *
      * @param condition       an expression defining if the method will be invoked
      * @param objectType      the class of the object that is processed
-     * @param consumer        the actual processing logic in form of object -> {some logic}
+     * @param consumer        the actual processing logic in form of a lambda function
      * @param processingGroup the group name that all instances share
      * @param <T>             the class of the object that is processed
      */

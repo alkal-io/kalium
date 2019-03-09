@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 public class KaliumImpl implements Kalium, QueueListener {
 
     private List<Object> reactorInstances;
-    private Map<String, Object> processingGroupToReactorInstanceMap = new HashMap<>();
-    private Map<String, Map<Class<?>, List<Method>>> processingGroupToObjectTypeToMethodMap = new HashMap<>();
+    private Map<String, Object> reactorIdToReactorInstanceMap = new HashMap<>();
+    private Map<String, Map<Class, List<Method>>> reactorIdToObjectTypeToMethodMap = new HashMap<>();
     private KaliumQueueAdapter queueAdapter;
 
 
@@ -48,16 +48,16 @@ public class KaliumImpl implements Kalium, QueueListener {
 
 
     @Override
-    public void onObjectReceived(String processingGroup, Object object) {
-        if (!processingGroupToObjectTypeToMethodMap.containsKey(processingGroup)) return;
-        Map<Class<?>, List<Method>> objectTypeToHandlersMap = processingGroupToObjectTypeToMethodMap.get(processingGroup);
+    public void onObjectReceived(String reactorId, Object object) {
+        if (!reactorIdToObjectTypeToMethodMap.containsKey(reactorId)) return;
+        Map<Class, List<Method>> objectTypeToHandlersMap = reactorIdToObjectTypeToMethodMap.get(reactorId);
         if (!objectTypeToHandlersMap.containsKey(object.getClass())) return;
         //TODO filter based on annotations
         //TODO run in parallel
         objectTypeToHandlersMap.get(object.getClass()).stream().forEach(method -> {
-            Object reactor = processingGroupToReactorInstanceMap.get(processingGroup);
+            Object reactorInstance = reactorIdToReactorInstanceMap.get(reactorId);
             try {
-                method.invoke(reactor, object);
+                method.invoke(reactorInstance, object);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
@@ -68,14 +68,14 @@ public class KaliumImpl implements Kalium, QueueListener {
     }
 
     @Override
-    public Map<String, Collection<String>> getTopicsByProcessingGroupsToListenTo() {
-        Map<String, Collection<String>> processingGroupToObjectTypes = new HashMap<>();
-        processingGroupToObjectTypeToMethodMap.entrySet().forEach(entry -> {
-            Collection<String> objectTypes = entry.getValue().keySet().stream()
-                    .map(clazz -> clazz.getSimpleName()).collect(Collectors.toList());
-            processingGroupToObjectTypes.put(entry.getKey(), objectTypes);
+    public Map<String, Collection<Class>> getReactorIdsToObjectTypesMap() {
+        Map<String, Collection<Class>> reactorIdsToObjectTypeMap = new HashMap<>();
+        reactorIdToObjectTypeToMethodMap.entrySet().forEach(entry -> {
+            Collection<Class> objectTypes = entry.getValue().keySet();
+
+            reactorIdsToObjectTypeMap.put(entry.getKey(), objectTypes);
         });
-        return processingGroupToObjectTypes;
+        return reactorIdsToObjectTypeMap;
     }
 
     @Override
@@ -84,26 +84,26 @@ public class KaliumImpl implements Kalium, QueueListener {
     }
 
     @Override
-    public <T> void on(String condition, Class<T> tClass, Consumer<T> consumer, String processingGroup) {
+    public <T> void on(String condition, Class<T> tClass, Consumer<T> consumer, String reactorId) {
         BaseReactor<T> reactorInstance = new BaseReactor<T>() {
             @On
             public void doSomething(T t) {
                 consumer.accept(t);
             }
         };
-        Map<Class<?>, List<Method>> objectTypeToHandlersMap = new HashMap<>();
+        Map<Class, List<Method>> objectTypeToHandlersMap = new HashMap<>();
         objectTypeToHandlersMap.put(tClass, Arrays.asList(reactorInstance.getClass().getDeclaredMethods()));
-        processingGroupToObjectTypeToMethodMap.put(processingGroup, objectTypeToHandlersMap);
-        processingGroupToReactorInstanceMap.put(processingGroup, reactorInstance);
+        reactorIdToObjectTypeToMethodMap.put(reactorId, objectTypeToHandlersMap);
+        reactorIdToReactorInstanceMap.put(reactorId, reactorInstance);
 
     }
 
-    private void addReactorInternal(String processingGroup, Object reactorInstance) {
+    private void addReactorInternal(String reactorId, Object reactorInstance) {
 
-        Class<?> reactorClass = reactorInstance.getClass();
-        Map<Class<?>, List<Method>> objectTypeToHandlersMap = new HashMap<>();
-        processingGroupToObjectTypeToMethodMap.put(processingGroup, objectTypeToHandlersMap);
-        processingGroupToReactorInstanceMap.put(processingGroup, reactorInstance);
+        Class reactorClass = reactorInstance.getClass();
+        Map<Class, List<Method>> objectTypeToHandlersMap = new HashMap<>();
+        reactorIdToObjectTypeToMethodMap.put(reactorId, objectTypeToHandlersMap);
+        reactorIdToReactorInstanceMap.put(reactorId, reactorInstance);
         ReflectionUtils.getMethodsAnnotatedWithOn(reactorClass).forEach(method -> {
                     assert method.getParameterCount() == 1;
                     Class parameter = method.getParameterTypes()[0];
