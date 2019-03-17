@@ -42,6 +42,12 @@ public interface Kalium {
      */
     void start();
 
+    /**
+     * Stops the Kalium client and terminate any external connections
+     */
+    void stop();
+
+
 
     /**
      * Defines a reaction to an object of type T. Use this method for events/object that suppose to be processed by

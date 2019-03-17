@@ -31,6 +31,11 @@ public class KaliumImpl implements Kalium, QueueListener {
         queueAdapter.start();
     }
 
+    @Override
+    public void stop() {
+        queueAdapter.stop();
+    }
+
 
     @Override
     public void post(Object object) {
