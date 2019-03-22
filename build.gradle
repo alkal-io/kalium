@@ -48,6 +48,7 @@ publishing {
             pom {
                 name = 'Kalium'
                 description = 'A reactive framework for micro-services. current commit_id=' + gitVersion()
+                version = '0.0.2-SNAPSHOT'
                 url = 'https://kalium.alkal.io'
 
                 licenses {
