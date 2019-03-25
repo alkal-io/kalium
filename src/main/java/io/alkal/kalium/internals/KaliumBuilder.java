@@ -20,6 +20,7 @@ public class KaliumBuilder {
         return this;
     }
 
+
     public Kalium build() {
         KaliumImpl kalium = new KaliumImpl();
         queueAdapter.setQueueListener(kalium);

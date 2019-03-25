@@ -14,18 +14,18 @@ import org.mockito.Mockito;
 public class KaliumBasicTest {
 
     @Test
-    public void testItShouldCallReactorMethod_whenAMatchingEventIsPosted() {
+    public void testItShouldCallReactionMethod_whenAMatchingEventIsPosted() {
 
         DummyQueue dummyQueue = new DummyQueue();
 
         DummyKaliumQueueAdapter queueAdapter1 = new DummyKaliumQueueAdapter();
         queueAdapter1.setDummyQueue(dummyQueue);
-        MyReactor myReactor = Mockito.spy(new MyReactor());
+        MyReaction myReaction = Mockito.spy(new MyReaction());
         Kalium kalium1 = Kalium.Builder()
                 .setQueueAdapter(queueAdapter1)
-                .addReactor(myReactor)
                 .build();
 
+        kalium1.addReaction(myReaction);
         kalium1.start();
 
         DummyKaliumQueueAdapter queueAdapter2 = new DummyKaliumQueueAdapter();
@@ -41,7 +41,7 @@ public class KaliumBasicTest {
 
         kalium2.post(payment);
 
-        Mockito.verify(myReactor).doSomething(Mockito.eq(payment));
+        Mockito.verify(myReaction).doSomething(Mockito.eq(payment));
 
     }
 
