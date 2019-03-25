@@ -36,6 +36,14 @@ public class KaliumImpl implements Kalium, QueueListener {
         queueAdapter.stop();
     }
 
+    @Override
+    public void addReactor(Object reactor) {
+        if(reactorInstances == null){
+            reactorInstances = new LinkedList<>();
+        }
+        reactorInstances.add(reactor);
+    }
+
 
     @Override
     public void post(Object object) {

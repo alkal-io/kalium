@@ -48,6 +48,11 @@ public interface Kalium {
     void stop();
 
 
+    /**
+     * Add a reactor instace
+     * @param reactor an instance of a class with methods annotated with @On annotation
+     */
+    void addReactor(Object reactor);
 
     /**
      * Defines a reaction to an object of type T. Use this method for events/object that suppose to be processed by
