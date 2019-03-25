@@ -15,11 +15,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface On {
-
-    /**
-     * Set the topic name the method is listening to
-     *
-     * @return
-     */
-    public String value() default "";
+    
 }
