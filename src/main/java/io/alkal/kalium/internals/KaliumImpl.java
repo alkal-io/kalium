@@ -16,9 +16,9 @@ import java.util.Map;
  */
 
 public class KaliumImpl implements Kalium, QueueListener {
-    private Map<Class<?>, Object> reactors;
+    private Map<Class<?>, Object> reactions;
 
-    private Map<Class<?>, Map<Class<?>, List<Method>>> reactorToObjectTypeToMethodMap;
+    private Map<Class<?>, Map<Class<?>, List<Method>>> reactionToObjectTypeToMethodMap;
 
     private KaliumQueueAdapter queueAdapter;
 
@@ -33,35 +33,35 @@ public class KaliumImpl implements Kalium, QueueListener {
         queueAdapter.post(object);
     }
 
-    public <T> T getReactorInstance(Class<T> clazz) {
-        return (T) reactors.get(clazz);
+    public <T> T getReactionInstance(Class<T> clazz) {
+        return (T) reactions.get(clazz);
     }
 
 
-    void setReactors(Map<Class<?>, Object> reactors) {
-        this.reactors = reactors;
+    void setReactions(Map<Class<?>, Object> reactions) {
+        this.reactions = reactions;
     }
 
     void setQueueAdapter(KaliumQueueAdapter queueAdapter) {
         this.queueAdapter = queueAdapter;
     }
 
-    void setReactorToObjectTypeToMethodMap(Map<Class<?>, Map<Class<?>, List<Method>>> reactorToObjectTypeToMethodMap) {
-        this.reactorToObjectTypeToMethodMap = reactorToObjectTypeToMethodMap;
+    void setReactionToObjectTypeToMethodMap(Map<Class<?>, Map<Class<?>, List<Method>>> reactionToObjectTypeToMethodMap) {
+        this.reactionToObjectTypeToMethodMap = reactionToObjectTypeToMethodMap;
     }
 
 
     @Override
-    public void onObjectReceived(Class<?> reactorClass, Object object) {
-        if (!reactorToObjectTypeToMethodMap.containsKey(reactorClass)) return;
-        Map<Class<?>, List<Method>> objectTypeToHandlersMap = reactorToObjectTypeToMethodMap.get(reactorClass);
+    public void onObjectReceived(Class<?> reactionClass, Object object) {
+        if (!reactionToObjectTypeToMethodMap.containsKey(reactionClass)) return;
+        Map<Class<?>, List<Method>> objectTypeToHandlersMap = reactionToObjectTypeToMethodMap.get(reactionClass);
         if (!objectTypeToHandlersMap.containsKey(object.getClass())) return;
         //TODO filter based on annotations
         //TODO run in parallel
         objectTypeToHandlersMap.get(object.getClass()).stream().forEach(method -> {
-            Object reactor = getReactorInstance(method.getDeclaringClass());
+            Object reaction = getReactionInstance(method.getDeclaringClass());
             try {
-                method.invoke(reactor, object);
+                method.invoke(reaction, object);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
@@ -72,11 +72,11 @@ public class KaliumImpl implements Kalium, QueueListener {
     }
 
     @Override
-    public Map<Class<?>, Collection<Class<?>>> getReactorToObjectTypeMap() {
-        Map<Class<?>, Collection<Class<?>>> reactorToObjectTypes = new HashMap<>();
-        reactorToObjectTypeToMethodMap.entrySet().forEach(entry -> {
-            reactorToObjectTypes.put(entry.getKey(), entry.getValue().keySet());
+    public Map<Class<?>, Collection<Class<?>>> getReactionToObjectTypeMap() {
+        Map<Class<?>, Collection<Class<?>>> reactionToObjectTypes = new HashMap<>();
+        reactionToObjectTypeToMethodMap.entrySet().forEach(entry -> {
+            reactionToObjectTypes.put(entry.getKey(), entry.getValue().keySet());
         });
-        return  reactorToObjectTypes;
+        return  reactionToObjectTypes;
     }
 }

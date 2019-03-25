@@ -125,13 +125,13 @@ public class HelloPrintingService {
     public static void main(String[] args) {
         Kalium kalium = Kalium.Builder()
             .setQueue(new KaliumKafkaQueueAdapter("localhost:9092"))
-            .addReactor(new HelloReactor)
+            .addReaction(new HelloReaction)
             .build();
         kalium.start();
    }
 }
 
-public class HelloReactor{
+public class HelloReaction{
     @On
     public void printHello(Hello hello) {
         System.out.println("Hello " + hello.getValue());

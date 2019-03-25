@@ -33,8 +33,8 @@ public class DummyKaliumQueueAdapter implements KaliumQueueAdapter {
     }
 
     public void objectArrived(Object object) {
-        queueListener.getReactorToObjectTypeMap().keySet().forEach(reactorClass -> {
-            queueListener.onObjectReceived(reactorClass, object);
+        queueListener.getReactionToObjectTypeMap().keySet().forEach(reactionClass -> {
+            queueListener.onObjectReceived(reactionClass, object);
         });
     }
 

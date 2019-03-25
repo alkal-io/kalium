@@ -16,8 +16,8 @@ public interface Kalium {
      * <code>
      *     Kalium.Builder().
      *     setQueueAdapter(...).
-     *     addReactor(...). //reactor1
-     *     addReactor(...). //reactor2
+     *     addReaction(...). //reaction1
+     *     addReaction(...). //reaction2
      *     build()
      *
      * </code>
