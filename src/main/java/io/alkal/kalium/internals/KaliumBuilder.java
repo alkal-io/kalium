@@ -18,29 +18,29 @@ import java.util.Map;
 public class KaliumBuilder {
 
     private KaliumQueueAdapter queueAdapter = null;
-    private List<Object> reactors = new LinkedList<>();
+    private List<Object> reactions = new LinkedList<>();
 
     public KaliumBuilder setQueueAdapter(KaliumQueueAdapter queueAdapter) {
         this.queueAdapter = queueAdapter;
         return this;
     }
 
-    public KaliumBuilder addReactor(Object reactor) {
-        reactors.add(reactor);
+    public KaliumBuilder addReaction(Object reaction) {
+        reactions.add(reaction);
         return this;
     }
 
     public Kalium build() {
         KaliumImpl kalium = new KaliumImpl();
-        Map<Class<?>, Object> reactorsMap = new HashMap<>();
-        Map<Class<?>,Map<Class<?>, List<Method>>>  reactorToObjectTypeToMethodMap = new HashMap<>();
-        reactors.forEach(reactor -> {
+        Map<Class<?>, Object> reactionsMap = new HashMap<>();
+        Map<Class<?>,Map<Class<?>, List<Method>>>  reactionToObjectTypeToMethodMap = new HashMap<>();
+        reactions.forEach(reaction -> {
 
-            Class<?> reactorClass = reactor.getClass();
+            Class<?> reactionClass = reaction.getClass();
             Map<Class<?>, List<Method>> objectTypeToHandlersMap = new HashMap<>();
-            reactorToObjectTypeToMethodMap.put(reactorClass, objectTypeToHandlersMap);
-            reactorsMap.put(reactorClass, reactor);
-            ReflectionUtils.getMethodsAnnotatedWithOn(reactorClass).forEach(method -> {
+            reactionToObjectTypeToMethodMap.put(reactionClass, objectTypeToHandlersMap);
+            reactionsMap.put(reactionClass, reaction);
+            ReflectionUtils.getMethodsAnnotatedWithOn(reactionClass).forEach(method -> {
                         assert method.getParameterCount() == 1;
                         Class parameter = method.getParameterTypes()[0];
                         List<Method> handlers = objectTypeToHandlersMap.get(parameter);
@@ -54,8 +54,8 @@ public class KaliumBuilder {
             );
 
         });
-        kalium.setReactors(reactorsMap);
-        kalium.setReactorToObjectTypeToMethodMap(reactorToObjectTypeToMethodMap);
+        kalium.setReactions(reactionsMap);
+        kalium.setReactionToObjectTypeToMethodMap(reactionToObjectTypeToMethodMap);
         queueAdapter.setQueueListener(kalium);
         kalium.setQueueAdapter(queueAdapter);
 

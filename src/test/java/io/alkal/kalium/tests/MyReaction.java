@@ -6,7 +6,7 @@ import io.alkal.kalium.annotations.On;
  * @author Ziv Salzman
  * Created on 20-Jan-2019
  */
-public class MyReactor {
+public class MyReaction {
 
     @On
     public void doSomething(Payment payment){

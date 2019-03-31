@@ -15,7 +15,7 @@ plugins {
 }
 
 group = 'io.alkal'
-version = '0.0.1'
+version = '0.0.2'
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
@@ -48,6 +48,7 @@ publishing {
             pom {
                 name = 'Kalium'
                 description = 'A reactive framework for micro-services. current commit_id=' + gitVersion()
+                version = '0.0.2-SNAPSHOT'
                 url = 'https://kalium.alkal.io'
 
                 licenses {
@@ -76,7 +77,8 @@ publishing {
         maven {
             def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
             def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+//             url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            url = snapshotsRepoUrl
             credentials {
                 username = project.properties['sonatype.user']
                 password = project.properties['sonatype.password']

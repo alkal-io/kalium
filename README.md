@@ -17,11 +17,13 @@ Here is how we would use Kalium to help us with these data flows.
 ``` java
  public class PaymentProcessor {
     ...
-    @On("payment.processed == false")
+    @On
     public void processPayment(Payment payment) {
-        // Do something with the payment, e.g. call Stripe to make the actual payment
-        payment.processed = true;
-        kalium.post(payment);
+        if(!payment.isProcessed()) {
+            // Do something with the payment, e.g. call Stripe to make the actual payment
+            payment.processed = true;
+            kalium.post(payment);
+        }
     }
  }
 ```
@@ -30,11 +32,13 @@ Here is how we would use Kalium to help us with these data flows.
 ``` java
  public class ReceiptProducer {
     ...
-    @On("payment.processed == true")
+    @On
     public void prepareReceipt(Payment payment) {
-        //convert processed payment into receipt
-        Receipt newReceipt = converPaymentToReceipt(payment);
-        kalium.post(newReceipt);
+        if(payment.isProcessed()) {
+            //convert processed payment into receipt
+            Receipt newReceipt = converPaymentToReceipt(payment);
+            kalium.post(newReceipt);
+        }
     }
  }
 ```
@@ -43,7 +47,7 @@ Here is how we would use Kalium to help us with these data flows.
 ``` java
  public class ReceiptMailer {
     ...
-    @On("receipt")
+    @On
     public void sendReceipt(Receipt receipt) {
         //send the receipt, e.g. convert it to HTML and send it with SendGrid
         prepareReceiptEmailAndSend(receipt);
@@ -54,7 +58,8 @@ Here is how we would use Kalium to help us with these data flows.
 ```
 
 ## How Kalium works?
-Behind the scenes, Kalium is using existing queue technology as a scalable event bus. Kalium uses the ```@On``` annotations to define out-of-the-box serializer/de-serializer for the event classes. The condition specified inside the ```@On``` annotation is translated to a generated queue listener, based on the underlying queue it uses.
+Behind the scenes, Kalium is using existing queue technology as a scalable event bus. Kalium uses the ```@On``` annotations to define out-of-the-box serializer/de-serializer for the event classes.
+The object type of the paramater of the annotated method, is used as the topic in the underlying queue.
 
 Currently, Kalium is supporting Java, and can only be used with Apache Kafka as the underlying event bus. However, it is planned to have an implementation for other languages like Javascript and Python and to be used with AWS Kinesis as well.
 
@@ -120,14 +125,14 @@ public class HelloPrintingService {
     public static void main(String[] args) {
         Kalium kalium = Kalium.Builder()
             .setQueue(new KaliumKafkaQueueAdapter("localhost:9092"))
-            .addReactor(new HelloReactor)
+            .addReaction(new HelloReaction)
             .build();
         kalium.start();
    }
 }
 
-public class HelloReactor{
-    @On("hello")
+public class HelloReaction{
+    @On
     public void printHello(Hello hello) {
         System.out.println("Hello " + hello.getValue());
     }
