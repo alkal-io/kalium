@@ -23,10 +23,9 @@ public class KaliumBasicTest {
         MyReaction myReaction = Mockito.spy(new MyReaction());
         Kalium kalium1 = Kalium.Builder()
                 .setQueueAdapter(queueAdapter1)
-                .addReaction(myReaction)
                 .build();
 
-        kalium1 = Mockito.spy(kalium1);
+        kalium1.addReaction(myReaction);
         kalium1.start();
 
         DummyKaliumQueueAdapter queueAdapter2 = new DummyKaliumQueueAdapter();

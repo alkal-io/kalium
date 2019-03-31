@@ -14,9 +14,12 @@ import java.util.Map;
  */
 public interface QueueListener {
 
-    //TODO should be changed to groupsAndTopicsToListenTo. we should use strings
-    public Map<Class<?>, Collection<Class<?>>> getReactionToObjectTypeMap();
+    /**
+     *
+     * @return map from a processingGroup id, AKA a reaction id, to a list of topics, AKA objectTypes
+     */
+    Map<String, Collection<Class>> getReactionIdsToObjectTypesMap();
 
-    //TODO we should use group/subscription group instead of reaction
-    void onObjectReceived(Class<?> reactionClass, Object object);
+    void onObjectReceived(String reactionId, Object object);
+
 }

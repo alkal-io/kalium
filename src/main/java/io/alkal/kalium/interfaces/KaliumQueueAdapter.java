@@ -29,4 +29,9 @@ public interface KaliumQueueAdapter {
      * @param queueListener
      */
     void setQueueListener(QueueListener queueListener);
+
+    /**
+     * Terminate any external connection
+     */
+    void stop();
 }

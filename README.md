@@ -125,8 +125,8 @@ public class HelloPrintingService {
     public static void main(String[] args) {
         Kalium kalium = Kalium.Builder()
             .setQueue(new KaliumKafkaQueueAdapter("localhost:9092"))
-            .addReaction(new HelloReaction)
             .build();
+        kalium.addReaction(new HelloReaction);
         kalium.start();
    }
 }
