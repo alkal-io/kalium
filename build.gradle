@@ -10,12 +10,13 @@ plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
     id 'maven-publish'
+    id 'jacoco'
     id "com.palantir.git-version" version "0.12.0-rc2"
     id 'signing'
 }
 
 group = 'io.alkal'
-version = '0.0.2'
+version = '0.0.3'
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
@@ -48,7 +49,7 @@ publishing {
             pom {
                 name = 'Kalium'
                 description = 'A reactive framework for micro-services. current commit_id=' + gitVersion()
-                version = '0.0.2'
+                version = '0.0.3-SNAPSHOT'
                 url = 'https://kalium.alkal.io'
 
                 licenses {
