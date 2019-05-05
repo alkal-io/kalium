@@ -1,6 +1,8 @@
 package io.alkal.kalium.tests;
 
 import io.alkal.kalium.Kalium;
+import io.alkal.kalium.exceptions.KaliumBuilderException;
+import io.alkal.kalium.exceptions.KaliumException;
 import io.alkal.kalium.tests.utils.DummyKaliumQueueAdapter;
 import io.alkal.kalium.tests.utils.DummyQueue;
 import org.junit.Test;
@@ -19,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class TestLambda {
 
     @Test
-    public void test_lambdaOn_shouldInvoke_whenPublishingAnEvent() {
+    public void test_lambdaOn_shouldInvoke_whenPublishingAnEvent() throws KaliumBuilderException, KaliumException {
         final AtomicReference<Boolean> messageArrived=new AtomicReference<>();
         messageArrived.set(false);
 
@@ -50,7 +52,7 @@ public class TestLambda {
     }
 
     @Test
-    public void test_lambdaOn_shouldInvokeInAllConsumersWithDifferentProcessingGroup_whenPublishingAnEvent() {
+    public void test_lambdaOn_shouldInvokeInAllConsumersWithDifferentProcessingGroup_whenPublishingAnEvent() throws KaliumBuilderException, KaliumException {
         final AtomicReference<Boolean> message1Arrived=new AtomicReference<>();
         message1Arrived.set(false);
         final AtomicReference<Boolean> message2Arrived=new AtomicReference<>();

@@ -10,6 +10,7 @@ plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
     id 'maven-publish'
+    id 'jacoco'
     id "com.palantir.git-version" version "0.12.0-rc2"
     id 'signing'
 }

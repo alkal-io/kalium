@@ -1,5 +1,6 @@
 package io.alkal.kalium;
 
+import io.alkal.kalium.exceptions.KaliumException;
 import io.alkal.kalium.internals.KaliumBuilder;
 
 import java.util.function.Consumer;
@@ -61,7 +62,7 @@ public interface Kalium {
      * @param consumer   the actual processing logic in form of a lambda function
      * @param <T>        the class of the object that is processed
      */
-    <T> void on(Class<T> objectType, Consumer<T> consumer);
+    <T> void on(Class<T> objectType, Consumer<T> consumer) throws KaliumException;
 
 
     /**
@@ -73,5 +74,5 @@ public interface Kalium {
      * @param processingGroup the group name that all instances share
      * @param <T>             the class of the object that is processed
      */
-    <T> void on(Class<T> objectType, Consumer<T> consumer, String processingGroup);
+    <T> void on(Class<T> objectType, Consumer<T> consumer, String processingGroup) throws KaliumException;
 }
