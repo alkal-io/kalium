@@ -8,6 +8,10 @@ jdk:
 before_script:
 - chmod a+x gradlew
 
-sccript: ./gradlew build
+sccript: ./gradlew build sonarqube \
+  -Dsonar.projectKey=alkal-io_kalium \
+  -Dsonar.organization=alkal-io \
+  -Dsonar.host.url=https://sonarcloud.io \
+  -Dsonar.login=4510b1f41d81e575a6e15c4a09128e0e989e7e03
 notifications:
   slack: kalium-alkalio:TKKbLCQK8wW6HLPGfrGWyKUS
