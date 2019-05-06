@@ -15,7 +15,6 @@ notifications:
 addons:
   sonarcloud:
     organization: "alkal-io" # the key of the org you chose at step #3
-    projectKey: "alkal-io_kalium"
 script:
   # other script steps might be done before running the actual analysis
   - ./gradlew build 
