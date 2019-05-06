@@ -9,7 +9,7 @@ jdk:
 before_script:
 - chmod a+x gradlew
 
-sccript: ./gradlew build 
+# sccript: ./gradlew build 
 notifications:
   slack: kalium-alkalio:TKKbLCQK8wW6HLPGfrGWyKUS
 addons:
@@ -17,4 +17,5 @@ addons:
     organization: "alkal-io" # the key of the org you chose at step #3
 script:
   # other script steps might be done before running the actual analysis
+  - ./gradlew build 
   - sonar-scanner
