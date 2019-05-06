@@ -106,3 +106,11 @@ repositories {
     jcenter()
     mavenLocal()
 }
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "alkal-io_kalium"
+        property "sonar.organization", "alkal-io"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}

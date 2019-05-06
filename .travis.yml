@@ -1,4 +1,5 @@
 #install: gradle wrapper --gradle-version 5.1.1
+dist: trusty
 install: ./gradlew assemble
 language: java
 jdk:
@@ -8,10 +9,12 @@ jdk:
 before_script:
 - chmod a+x gradlew
 
-sccript: ./gradlew build sonarqube \
-  -Dsonar.projectKey=alkal-io_kalium \
-  -Dsonar.organization=alkal-io \
-  -Dsonar.host.url=https://sonarcloud.io \
-  -Dsonar.login=4510b1f41d81e575a6e15c4a09128e0e989e7e03
+sccript: ./gradlew build 
 notifications:
   slack: kalium-alkalio:TKKbLCQK8wW6HLPGfrGWyKUS
+addons:
+  sonarcloud:
+    organization: "alkal-io" # the key of the org you chose at step #3
+script:
+  # other script steps might be done before running the actual analysis
+  - sonar-scanner
