@@ -6,8 +6,12 @@ jdk:
   - openjdk8
 
 before_script:
-- chmod a+x gradlew
+  - chmod a+x gradlew
+script:
+  - ./gradlew build check
+  - ./gradlew codeCoverageReport
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
-sccript: ./gradlew build
 notifications:
   slack: kalium-alkalio:TKKbLCQK8wW6HLPGfrGWyKUS
