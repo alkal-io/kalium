@@ -1,5 +1,5 @@
 # Kalium: a reactive framework for micro-services
-[![Build Status](https://travis-ci.org/alkal-io/kalium.svg?branch=master)](https://travis-ci.org/alkal-io/kalium)
+[![Build Status](https://travis-ci.org/alkal-io/kalium.svg?branch=master)](https://travis-ci.org/alkal-io/kalium) [![Maintainability](https://api.codeclimate.com/v1/badges/ffc99b07b20a3511d689/maintainability)](https://codeclimate.com/github/alkal-io/kalium-kafka/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/ffc99b07b20a3511d689/test_coverage)](https://codeclimate.com/github/alkal-io/kalium-kafka/test_coverage)
 
 #### _Kalium in neo-latin is the word for Pottasium- the chemical element of atomic number 19, a soft silvery-white reactive metal of the alkali metal group._
 
