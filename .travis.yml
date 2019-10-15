@@ -1,5 +1,8 @@
 #install: gradle wrapper --gradle-version 5.1.1
 dist: trusty
+env:
+  global:
+    - CC_TEST_REPORTER_ID=6728d7a9a1ed449e33455dbff8d8b4b8024b7afe9aee4208144cd8c6fdefa1db
 install: ./gradlew assemble
 language: java
 jdk:
@@ -8,9 +11,14 @@ jdk:
 
 before_script:
   - chmod a+x gradlew
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - ./gradlew build check
   - ./gradlew codeCoverageReport
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT  
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
