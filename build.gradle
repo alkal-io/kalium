@@ -108,28 +108,20 @@ repositories {
 }
 
 task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
     reports {
         xml.enabled true
-        csv.enabled true
-        html.destination file("${buildDir}/jacocoHtml")
-        xml.destination file("${buildDir}/reports/jacoco/report.xml")
+        xml.destination "${buildDir}/reports/jacoco/report.xml"
+        html.enabled false
+        csv.enabled false
     }
 }
-//task codeCoverageReport(type: JacocoReport) {
-//    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-//
-//    subprojects.each {
-//        sourceSets it.sourceSets.main
-//    }
-//
-//    reports {
-//        xml.enabled true
-//        xml.destination "${buildDir}/reports/jacoco/report.xml"
-//        html.enabled false
-//        csv.enabled false
-//    }
-//}
-//
-//codeCoverageReport.dependsOn {
-//    subprojects*.test
-//}
+
+codeCoverageReport.dependsOn {
+    subprojects*.test
+}
