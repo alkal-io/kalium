@@ -16,7 +16,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - ./gradlew build check
-  - ./gradlew codeCoverageReport
+  - ./gradlew jacocoTestReport
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT  
 after_success:
