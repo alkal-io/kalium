@@ -1,4 +1,5 @@
 #install: gradle wrapper --gradle-version 5.1.1
+dist: trusty
 install: ./gradlew assemble
 language: java
 jdk:
