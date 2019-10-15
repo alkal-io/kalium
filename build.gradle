@@ -122,6 +122,4 @@ task codeCoverageReport(type: JacocoReport) {
     }
 }
 
-codeCoverageReport.dependsOn {
-    subprojects*.test
-}
+codeCoverageReport.dependsOn(check)
