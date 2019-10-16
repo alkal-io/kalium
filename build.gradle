@@ -49,7 +49,7 @@ publishing {
             pom {
                 name = 'Kalium'
                 description = 'A reactive framework for micro-services. current commit_id=' + gitVersion()
-                version = '0.0.3-SNAPSHOT'
+                version = '0.0.3'
                 url = 'https://kalium.alkal.io'
 
                 licenses {
@@ -106,21 +106,6 @@ repositories {
     jcenter()
     mavenLocal()
 }
-
-// task codeCoverageReport(type: JacocoReport) {
-//     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-//     subprojects.each {
-//         sourceSets it.sourceSets.main
-//     }
-
-//     reports {
-//         xml.enabled true
-//         xml.destination file("${buildDir}/reports/jacoco/report.xml")
-//         html.enabled false
-//         csv.enabled false
-//     }
-// }
 
 jacocoTestReport {
     reports {
