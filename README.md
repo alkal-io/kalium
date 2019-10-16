@@ -3,6 +3,7 @@
 [![codecov](https://codecov.io/gh/alkal-io/kalium/branch/master/graph/badge.svg)](https://codecov.io/gh/alkal-io/kalium)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/alkal-io/kalium.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/alkal-io/kalium/alerts/)
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/alkal-io/kalium.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/alkal-io/kalium/context:java)
+[![Known Vulnerabilities](https://snyk.io/test/github/alkal-io/kalium/badge.svg)](https://snyk.io/test/github/alkal-io/kalium)
 #### _Kalium in neo-latin is the word for Pottasium- the chemical element of atomic number 19, a soft silvery-white reactive metal of the alkali metal group._
 
 ## What is Kalium?
