@@ -122,7 +122,7 @@ public class KaliumImpl implements Kalium, QueueListener {
             }
         };
         Map<Class, List<Method>> objectTypeToHandlersMap = new HashMap<>();
-        objectTypeToHandlersMap.put(tClass, Arrays.asList(reaction.getClass().getDeclaredMethods()));
+        objectTypeToHandlersMap.put(tClass,  ReflectionUtils.getMethodsAnnotatedWithOn(reaction.getClass()));
         reactionIdToObjectTypeToMethodMap.put(reactionId, objectTypeToHandlersMap);
         reactionIdToReactionMap.put(reactionId, reaction);
         logger.info("Reaction in form of lambda expression was added. " +
