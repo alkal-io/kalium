@@ -30,7 +30,7 @@ public class KaliumImpl implements Kalium, QueueListener {
 
     @Override
     public void start() {
-        if(reactions !=null) {
+        if (reactions != null) {
             reactions.forEach(reaction -> addReactionInternal(
                     reaction.getClass().getSimpleName(), reaction));
         }
@@ -46,22 +46,22 @@ public class KaliumImpl implements Kalium, QueueListener {
 
     @Override
     public void addReaction(Object reaction) {
-        if(reaction == null) {
+        if (reaction == null) {
             logger.warning("Reaction is null! No new reaction will be added.");
             return;
         }
-        if(reactions == null){
+        if (reactions == null) {
             reactions = new LinkedList<>();
         }
         reactions.add(reaction);
 
-        logger.info("New Reaction object was added [class="+reaction.getClass().getName()+"]");
+        logger.info("New Reaction object was added [class=" + reaction.getClass().getName() + "]");
     }
 
 
     @Override
     public void post(Object object) {
-        if(object != null) {
+        if (object != null) {
             logger.log(Level.FINEST, "Posting object: " + object.toString());
             queueAdapter.post(object);
         } else {
@@ -77,7 +77,7 @@ public class KaliumImpl implements Kalium, QueueListener {
     @Override
     public void onObjectReceived(String reactionId, Object object) {
         if (!reactionIdToObjectTypeToMethodMap.containsKey(reactionId)) {
-            logger.info("[reactionId="+reactionId+"] does not match any of the registered reactions");
+            logger.info("[reactionId=" + reactionId + "] does not match any of the registered reactions");
             return;
         }
         Map<Class, List<Method>> objectTypeToHandlersMap = reactionIdToObjectTypeToMethodMap.get(reactionId);
@@ -87,9 +87,9 @@ public class KaliumImpl implements Kalium, QueueListener {
             Object reaction = reactionIdToReactionMap.get(reactionId);
             try {
                 method.invoke(reaction, object);
-            } catch (IllegalAccessException|InvocationTargetException e) {
+            } catch (IllegalAccessException | InvocationTargetException e) {
                 logger.log(Level.WARNING, "Failed to invoke [method=" +
-                        method.getName()+"],[reactionId="+reactionId+"]", e);
+                        method.getName() + "],[reactionId=" + reactionId + "]", e);
             }
         });
 
@@ -109,12 +109,12 @@ public class KaliumImpl implements Kalium, QueueListener {
 
     @Override
     public <T> void on(Class<T> tClass, Consumer<T> consumer) throws KaliumException {
-       on(tClass, consumer, UUID.randomUUID().toString());
+        on(tClass, consumer, UUID.randomUUID().toString());
     }
 
     @Override
-    public <T> void on(Class<T> tClass, Consumer<T> consumer, String reactionId)  throws KaliumException{
-        validateOnInputs(tClass,consumer,reactionId);
+    public <T> void on(Class<T> tClass, Consumer<T> consumer, String reactionId) throws KaliumException {
+        validateOnInputs(tClass, consumer, reactionId);
         BaseReaction<T> reaction = new BaseReaction<T>() {
             @On
             public void doSomething(T t) {
@@ -122,25 +122,26 @@ public class KaliumImpl implements Kalium, QueueListener {
             }
         };
         Map<Class, List<Method>> objectTypeToHandlersMap = new HashMap<>();
-        objectTypeToHandlersMap.put(tClass, Arrays.asList(reaction.getClass().getDeclaredMethods()));
+        objectTypeToHandlersMap.put(tClass,
+                ReflectionUtils.getMethodsAnnotatedWithOn(reaction.getClass()));
         reactionIdToObjectTypeToMethodMap.put(reactionId, objectTypeToHandlersMap);
         reactionIdToReactionMap.put(reactionId, reaction);
         logger.info("Reaction in form of lambda expression was added. " +
-                "[class="+tClass.getName()+"],[reactionId="+reactionId+"]");
+                "[class=" + tClass.getName() + "],[reactionId=" + reactionId + "]");
 
     }
 
-    private void validateOnInputs(Class tClass, Consumer consumer, String reactionId)  throws KaliumException {
+    private void validateOnInputs(Class tClass, Consumer consumer, String reactionId) throws KaliumException {
         KaliumException exception = null;
-        if(tClass == null) {
+        if (tClass == null) {
             exception = new KaliumException(".on(...) cannot use null class!");
         } else if (consumer == null) {
-             exception = new KaliumException(".on(...) cannot use null reaction lambda expression!");
+            exception = new KaliumException(".on(...) cannot use null reaction lambda expression!");
         } else if (reactionId == null || reactionId.isEmpty()) {
-             exception = new KaliumException(".on(...) cannot use null or empty reactionId!");
+            exception = new KaliumException(".on(...) cannot use null or empty reactionId!");
         }
 
-        if(exception!=null) {
+        if (exception != null) {
             logger.log(Level.WARNING, exception.getMessage(), exception);
             throw exception;
         }

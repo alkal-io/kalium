@@ -16,7 +16,7 @@ plugins {
 }
 
 group = 'io.alkal'
-version = '0.0.3'
+version = '0.0.4'
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
@@ -49,7 +49,7 @@ publishing {
             pom {
                 name = 'Kalium'
                 description = 'A reactive framework for micro-services. current commit_id=' + gitVersion()
-                version = '0.0.3'
+                version = '0.0.4'
                 url = 'https://kalium.alkal.io'
 
                 licenses {
